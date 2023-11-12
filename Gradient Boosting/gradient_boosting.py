@@ -2,6 +2,7 @@ import pandas as pd
 from sklearn.model_selection import train_test_split
 from sklearn.ensemble import GradientBoostingRegressor
 from sklearn.metrics import mean_squared_error
+import numpy as np
 
 # Cargar los datos
 # Reemplaza 'ruta_a_tus_datos.csv' con la ruta a tu archivo de datos
@@ -29,10 +30,15 @@ modelo = GradientBoostingRegressor(n_estimators=100, learning_rate=0.1, max_dept
 # Entrenar el modelo
 modelo.fit(X_train, y_train)
 
-# Evaluar el modelo
+# Realizar predicciones
 y_pred = modelo.predict(X_test)
+
+# Calcular "precisión" basada en un umbral de error aceptable
+umbral = 50  # Define un umbral de error aceptable (por ejemplo, $50)
+predicciones_correctas = np.abs(y_pred - y_test) <= umbral
+precisión = np.mean(predicciones_correctas)
+print(f"Precisión con umbral de ${umbral}: {precisión:.2f}")
+
+# Calcular Error Cuadrático Medio
 mse = mean_squared_error(y_test, y_pred)
 print(f"Error Cuadrático Medio: {mse}")
-
-# Realizar predicciones (reemplazar 'datos_nuevos' con tus datos nuevos)
-# predicciones = modelo.predict(datos_nuevos)
